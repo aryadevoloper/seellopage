@@ -2,9 +2,17 @@
 <div class="card" id="pl"></div>
 <dialog id="dg"><h2>Ubah panel</h2><b id="dn"></b><input type="hidden" id="dp">
 <label>RAM</label><select id="er"></select><label>CPU (persen, 0 = tanpa batas)</label><input id="ec" type="number" min="0">
-<button onclick="saveEdit()"><i class="fa-solid fa-floppy-disk"></i>Simpan</button><button class="alt" onclick="dg.close()">Batal</button><div id="em" class="msg"></div></dialog></main><nav id="bot"></nav><script src="app.js"></script><script>
-let P=[];const dg=document.getElementById('dg');
-init().then(m=>{if(!m)return;$('hi').textContent='Halo, '+m.name;$('er').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="${n}">${n} GB</option>`).join('')+'<option value="0">Unlimited</option>';load()});
+<button onclick="saveEdit()"><i class="fa-solid fa-floppy-disk"></i>Simpan</button><button class="alt" onclick="dg.close()">Batal</button><div id="em" class="msg"></div></dialog><dialog id="nt"><h2>Info Seello</h2><p class="mu" style="white-space:normal">Ikuti saluran WhatsApp kami buat info terbaru dan bantuan:</p>
+<a class="opt" id="wc" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i><div><b>Saluran Pembuat</b><span>Info update dan pengumuman</span></div></a>
+<a class="opt" id="ws" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i><div><b>Saluran Support</b><span>Bantuan soal panel dan akun</span></div></a>
+<button class="alt" onclick="nt.close()">Tutup</button></dialog></main><nav id="bot"></nav><script src="app.js"></script><script>
+let P=[];// GANTI dengan link saluran WhatsApp kamu
+const WA_PEMBUAT='https://whatsapp.com/channel/ISI_KODE_PEMBUAT',WA_SUPPORT='https://whatsapp.com/channel/ISI_KODE_SUPPORT';
+const nt=document.getElementById('nt');
+function showInfo(){$('wc').href=WA_PEMBUAT;$('ws').href=WA_SUPPORT;
+if(sessionStorage.getItem('info'))return;sessionStorage.setItem('info','1');nt.showModal()}
+const dg=document.getElementById('dg');
+init().then(m=>{if(!m)return;$('hi').textContent='Halo, '+m.name;$('er').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="${n}">${n} GB</option>`).join('')+'<option value="0">Unlimited</option>';load();showInfo()});
 async function load(){P=await api('panels');$('cnt').textContent=P.length?P.length+' panel aktif':'Panel yang sudah kamu buat.';render()}
 function render(){$('pl').innerHTML=P.length?P.map(p=>`<div class="row"><div class="pcard pi"><i class="fa-solid fa-cube"></i><div class="pi"><b>${h(p.name)}</b><div class="mu">${h(p.server||'')}</div><span class="chip">${p.ram?p.ram+' GB':'Unlimited'}</span><span class="chip">CPU ${p.cpu?p.cpu+'%':'Unlimited'}</span>${p.adp?'<span class="chip">Admin Panel</span>':''}</div></div>
 <div class="acts">${p.pid?`<button class="sm alt" onclick="openEdit(${p.pid})" aria-label="Ubah"><i class="fa-solid fa-pen"></i></button><button class="sm alt del" onclick="removePanel(${p.pid})" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button>`:''}</div></div>`).join(''):'<p class="empty">Belum ada panel. Tekan tombol + di bawah untuk membuat.</p>'}
