@@ -5,7 +5,7 @@
 <label>Password baru (kosongkan kalau tidak diubah)</label><input id="ep" autocomplete="new-password">
 <button onclick="saveEdit()"><i class="fa-solid fa-floppy-disk"></i>Simpan</button><button class="alt" onclick="dg.close()">Batal</button><div id="em" class="msg"></div></dialog></main><nav id="bot"></nav><script src="app.js"></script><script>
 let P=[];// GANTI dengan link saluran WhatsApp kamu
-const WA_PEMBUAT='https://whatsapp.com/channel/0029Vb9gQ7P9MF93Q8SPYb3e';
+const WA_PEMBUAT='https://whatsapp.com/channel/0029Vb94ZxHBadmday3k9Q0I',WA_SUPPORT='https://whatsapp.com/channel/0029Vb9gQ7P9MF93Q8SPYb3e';
 $('wc').href=WA_PEMBUAT;$('ws').href=WA_SUPPORT;
 const dg=document.getElementById('dg');
 init().then(m=>{if(!m)return;$('hi').textContent='Halo, '+m.name;$('er').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="${n}">${n} GB</option>`).join('')+'<option value="0">Unlimited</option>';load()});
