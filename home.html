@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="style.css"><title>Home - Seello</title></head><body><header id="top"></header><main><h1 id="hi">Halo</h1><p class="sub" id="cnt">Panel yang sudah kamu buat.</p>
+<div class="card" id="pl"></div>
+<dialog id="dg"><h2>Ubah panel</h2><b id="dn"></b><input type="hidden" id="dp">
+<label>RAM</label><select id="er"></select><label>CPU (persen, 0 = tanpa batas)</label><input id="ec" type="number" min="0">
+<button onclick="saveEdit()"><i class="fa-solid fa-floppy-disk"></i>Simpan</button><button class="alt" onclick="dg.close()">Batal</button><div id="em" class="msg"></div></dialog></main><nav id="bot"></nav><script src="app.js"></script><script>
+let P=[];const dg=document.getElementById('dg');
+init().then(m=>{if(!m)return;$('hi').textContent='Halo, '+m.name;$('er').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="${n}">${n} GB</option>`).join('')+'<option value="0">Unlimited</option>';load()});
+async function load(){P=await api('panels');$('cnt').textContent=P.length?P.length+' panel aktif':'Panel yang sudah kamu buat.';render()}
+function render(){$('pl').innerHTML=P.length?P.map(p=>`<div class="row"><div class="pcard pi"><i class="fa-solid fa-cube"></i><div class="pi"><b>${h(p.name)}</b><div class="mu">${h(p.server||'')}</div><span class="chip">${p.ram?p.ram+' GB':'Unlimited'}</span><span class="chip">CPU ${p.cpu?p.cpu+'%':'Unlimited'}</span>${p.adp?'<span class="chip">Admin Panel</span>':''}</div></div>
+<div class="acts">${p.pid?`<button class="sm alt" onclick="openEdit(${p.pid})" aria-label="Ubah"><i class="fa-solid fa-pen"></i></button><button class="sm alt del" onclick="removePanel(${p.pid})" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button>`:''}</div></div>`).join(''):'<p class="empty">Belum ada panel. Tekan tombol + di bawah untuk membuat.</p>'}
+function openEdit(id){const p=P.find(x=>x.pid===id);$('dp').value=id;$('dn').textContent=p.name;$('er').value=p.ram;$('ec').value=p.cpu;say('em','');dg.showModal()}
+async function saveEdit(){say('em','Menyimpan...');try{await api('panel/edit',{pid:+$('dp').value,ram:$('er').value,cpu:$('ec').value});dg.close();load()}catch(e){say('em',e.message,1)}}
+async function removePanel(id){const p=P.find(x=>x.pid===id);if(!confirm('Hapus panel '+p.name+'? Server dan akunnya ikut terhapus.'))return;
+try{await api('panel/delete',{pid:id});load()}catch(e){alert(e.message)}}
+</script></body></html>

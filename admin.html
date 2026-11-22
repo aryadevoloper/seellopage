@@ -1,0 +1,6 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="style.css"><title>Buat Admin Panel - Seello</title></head><body data-mode="admin"><header id="top"></header><main><h1>Buat Admin Panel</h1><p class="sub">Akun dengan akses admin di panel.</p><div class="card">
+<label>Server</label><select id="sv"></select><div id="st" class="msg"></div>
+<label>Nama admin panel (untuk login)</label><input id="cn"><label>Password (minimal 6 karakter)</label><input id="cp">
+<label>RAM</label><select id="cr"></select><label>CPU (persen, 0 = tanpa batas)</label><input id="cc" type="number" value="100" min="0">
+<label>Jenis aplikasi</label><select id="ce"></select>
+<button id="go" onclick="create()" disabled><i class="fa-solid fa-rocket"></i>Buat Admin Panel</button><div id="cm" class="msg"></div></div></main><nav id="bot"></nav><script src="app.js"></script><script src="create.js"></script></body></html>

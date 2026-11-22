@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="style.css"><title>Chat - Seello</title></head><body><header id="top"></header><main><div class="head"><h1>Chat</h1><button class="sm alt" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>Keluar</button></div>
+<div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" placeholder="Cari username" oninput="find()" autocomplete="off"></div>
+<div class="card hide" id="res" style="margin-top:12px"></div>
+<div class="lbl">Disematkan</div><div class="card" id="gl"></div>
+<div class="lbl">Pesan</div><div class="card" id="dm"></div></main><nav id="bot"></nav><script src="app.js"></script><script>
+let tm;
+init().then(m=>{if(m)load()});
+function prev(c){if(!c.text)return 'Belum ada pesan';const who=c.system?'':(c.from===ME.username?'Kamu: ':(c.name?c.name+': ':''));return who+c.text}
+async function load(){const r=await api('chats'),g=r.global;
+$('gl').innerHTML=`<a class="chatrow" href="room.html"><div class="ava"><i class="fa-solid fa-earth-asia"></i></div><div class="pi"><b>Global <i class="fa-solid fa-thumbtack pin"></i></b><div class="mu">${h(prev(g))}</div></div><span class="mu">${g.at?hm(g.at):''}</span></a>`;
+$('dm').innerHTML=r.dms.length?r.dms.map(d=>`<a class="chatrow" href="room.html?u=${encodeURIComponent(d.username)}"><div class="ava">${h(d.name[0].toUpperCase())}</div><div class="pi"><b>${h(d.name)}</b><div class="mu">${h(prev(d))}</div></div><span class="mu">${d.at?hm(d.at):''}</span></a>`).join(''):'<p class="empty">Belum ada percakapan. Cari username untuk memulai.</p>'}
+function find(){clearTimeout(tm);tm=setTimeout(async()=>{const q=$('q').value.trim(),b=$('res');if(!q){b.classList.add('hide');return}
+const l=await api('users/search?q='+encodeURIComponent(q));b.classList.remove('hide');
+b.innerHTML=l.length?l.map(u=>`<a class="chatrow" href="room.html?u=${encodeURIComponent(u.username)}"><div class="ava">${h(u.name[0].toUpperCase())}</div><div class="pi"><b>${h(u.name)}</b><div class="mu">@${h(u.username)}</div></div></a>`).join(''):'<p class="empty">Username tidak ditemukan.</p>'},250)}
+</script></body></html>

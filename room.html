@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="style.css"><title>Chat - Seello</title></head><body><div class="roomtop"><div class="bar-in"><a class="iconbtn" href="chat.html" aria-label="Kembali"><i class="fa-solid fa-arrow-left"></i></a><div class="ava" id="ra"></div><div><b id="rt">Memuat...</b><div class="mu" id="rs"></div></div></div></div>
+<div class="msgs" id="ms"></div>
+<div class="composer"><div class="bar-in"><input id="tx" placeholder="Tulis pesan" maxlength="500" autocomplete="off"><button onclick="send()" aria-label="Kirim"><i class="fa-solid fa-paper-plane"></i></button></div></div>
+<script src="app.js"></script><script>
+const peer=new URLSearchParams(location.search).get('u');let last=0,busy=false;
+$('ra').innerHTML=peer?'<i class="fa-solid fa-user"></i>':'<i class="fa-solid fa-earth-asia"></i>';$('rs').textContent=peer?'':'Semua anggota';
+$('tx').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+init().then(m=>{if(m){poll();setInterval(poll,3000)}});
+function add(m){const d=document.createElement('div');
+if(m.system){d.className='sys';d.textContent=m.text}else{d.className='bub'+(m.me?' me':'');d.innerHTML=(m.me||peer?'':'<small>'+h(m.name)+'</small>')+h(m.text)+'<time>'+hm(m.at)+'</time>'}$('ms').append(d)}
+async function poll(){if(busy)return;busy=true;try{const r=await api('messages?after='+last+(peer?'&with='+encodeURIComponent(peer):''));$('rt').textContent=r.title;
+if(r.messages.length){const el=document.documentElement,end=!last||el.scrollHeight-scrollY-innerHeight<140;r.messages.forEach(add);last=r.messages[r.messages.length-1].id;if(end)scrollTo(0,el.scrollHeight)}}catch(e){if(!last)$('rt').textContent=e.message}busy=false}
+async function send(){const t=$('tx').value.trim();if(!t)return;$('tx').value='';try{await api('messages',{text:t,with:peer||undefined});poll()}catch(e){alert(e.message)}}
+</script></body></html>

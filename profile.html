@@ -1,0 +1,7 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="style.css"><title>Profil - Seello</title></head><body><header id="top"></header><main><h1>Profil</h1><p class="sub">Atur nama dan bio akunmu.</p><div class="card">
+<label>Nama tampilan</label><input id="nm" maxlength="30" placeholder="Kosongkan untuk memakai username"><label>Username</label><input id="un" disabled><label>Bio</label><textarea id="bio" maxlength="160" placeholder="Ceritakan sedikit tentang kamu"></textarea>
+<button onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i>Simpan profil</button><div id="pm" class="msg"></div></div>
+<button class="alt" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>Keluar</button></main><nav id="bot"></nav><script src="app.js"></script><script>
+init().then(m=>{if(!m)return;$('nm').value=m.name===m.username?'':m.name;$('bio').value=m.bio;$('un').value=m.username});
+async function saveProfile(){try{ME=await api('profile',{name:$('nm').value,bio:$('bio').value});say('pm','Profil tersimpan')}catch(e){say('pm',e.message,1)}}
+</script></body></html>
